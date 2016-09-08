@@ -1,0 +1,38 @@
+body {
+	background-color: red;
+}
+
+p {
+	font-family: 'Bree Serif', serif;
+	font-size: 24px;
+}
+
+button {
+	font-family: 'Exo 2', sans-serif;
+}
+
+#restart {
+	font-weight: bold;
+	border-width: 5px;
+	background-color: grey;
+}
+
+img {
+	width: 50%;
+}
+.flag {
+	width: 150px;
+	display: inline;
+	float: left;
+}
+
+h1 {
+	display: inline;
+	float: left;
+}
+
+.top {
+	width: 500px;
+	height: 150px;
+	margin: 0 auto;
+}
