@@ -37,22 +37,17 @@ function gameInfo(questions, choices, pictures) {
 
 var triniGame = new gameInfo(triniQuestions, triniChoices, answerPics);
 
+
 function askQuestion(gameInformation) {
 	emptyChoices();
 	emptyFeedback();
 	$("#pregunta").text(gameInformation.questions[currentQuestion]);
-	isAnswerClicked = false;
 	for (i=0; i < gameInformation.choices[currentQuestion].length; i++) {
 		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + gameInformation.choices[currentQuestion][i] + "</button><br>");
 	}
 
 }
 
-
-
-
-// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ================================================================================================================
 
 $("#restart").click(function(){
 		isRestartClicked = true;
@@ -108,7 +103,10 @@ function decreaseGameTime() {
 function decreaseQuestionTime() {
 	questionTimer--;
 	$(".questionTiempo").html("Question Time Remaining: " + questionTimer + " seconds");
-	
+	// console.log(isAnswerClicked);
+	// console.log(currentQuestion);
+	// console.log(questionTimer);
+
 	if (questionTimer <= 0) {
 		$(".questionTiempo").html("Question Time Remaining: " + 0 + " seconds");
 		clearInterval(questionTimeKeeper);
@@ -158,151 +156,104 @@ function correctAnswerFeedback(picture) {
 	$(".theChoices").html("Yup you got it!<br>" + picture);
 }
 
-// incorrect provided
+// incorrect answer provided
 function incorrectAnswerFeedback(answer) {
 	$(".theChoices").empty();
 	$(".feedback").html("Sorry the correct answer was:<br>" + answer);
 }
 
+function setQuestionOne() {
+	nextQuestionTimeout = setTimeout(questionOne, 3000);
+}
 
-function questionZero() {
-	// variable to determine which question the user is on
-	currentQuestion = 0;
-	askQuestion(triniGame);
+function setQuestionTwo() {
+	nextQuestionTimeout = setTimeout(questionTwo, 3000);
+}
+
+function setQuestionThree() {
+	nextQuestionTimeout = setTimeout(questionThree, 3000);
+}
+
+function setQuestionFour() {
+	nextQuestionTimeout = setTimeout(questionFour, 3000);
+}
+
+function setResultsPage() {
+	nextQuestionTimeout = setTimeout(resultsPage, 3000);	
+}
+
+function checkAnswer(answerNum, next) {
 	if (gameTimer > 0 && questionTimer > 0) {
 		$(".answerButtons").click(function () {
 			isAnswerClicked = true;
-			if ($(this).attr("id") == 1) {
+			if ($(this).attr("id") == answerNum) {
 				correctAnswerFeedback(triniGame.pictures[currentQuestion]);
 				corrects++;
+				currentQuestion++;
 				clearInterval(questionTimeKeeper);
 				clearInterval(gameTimeKeeper);
-				nextQuestionTimeout = setTimeout(questionOne, 3000);
 				setTimeout(startGameTimer, 3000);
+				next();
 				
 			} 
 
 			else {
-				incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
+				incorrectAnswerFeedback(triniGame.choices[currentQuestion][answerNum]);
 				incorrects++;
 				clearInterval(questionTimeKeeper);
 				currentQuestion++;
-				nextQuestionTimeout = setTimeout(questionOne, 2000);							
+				next();							
 			}
 		});	
 	}
+	else {
+		currentQuestion++;
+		console.log(questionTimer);
+	}
+	
+}
+
+function questionZero() {
+	// variable to determine which question the user is on
+	currentQuestion = 0;
+	isAnswerClicked = false;
+	askQuestion(triniGame);
+	checkAnswer(1, setQuestionOne);
+	
 
 }
 
 
 function questionOne() {
 	resetQuestionTimer();
-	currentQuestion++;
 	startQuestionTimer();
 	askQuestion(triniGame);
-	$(".answerButtons").click(function () {
-		isAnswerClicked = true;
-		if ($(this).attr("id") == 0) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
-			corrects++;
-			clearInterval(questionTimeKeeper);
-			clearInterval(gameTimeKeeper);
-			nextQuestionTimeout = setTimeout(questionTwo, 3000);
-			setTimeout(startGameTimer, 3000);
-		} 
-
-		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][0]);
-			incorrects++;
-			clearInterval(questionTimeKeeper);
-			nextQuestionTimeout = setTimeout(questionTwo, 2000);
-		}
-
-
-	});
+	checkAnswer(0, setQuestionTwo);
 }
 
 
 function questionTwo() {
 	resetQuestionTimer();
-	currentQuestion++;
 	startQuestionTimer();
 	askQuestion(triniGame);
-
-	$(".answerButtons").click(function () {
-		isAnswerClicked = true;
-		if ($(this).attr("id") == 2) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
-			corrects++;
-			clearInterval(questionTimeKeeper);
-			clearInterval(gameTimeKeeper);
-			nextQuestionTimeout = setTimeout(questionThree, 3000);
-			setTimeout(startGameTimer, 3000);
-		} 
-
-		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][2]);
-			incorrects++;
-			clearInterval(questionTimeKeeper);
-			nextQuestionTimeout = setTimeout(questionThree, 2000);
-		}
-	});
+	checkAnswer(2, setQuestionThree);
 }
 
 function questionThree() {
 	resetQuestionTimer();
-	currentQuestion++;
 	startQuestionTimer();
 	askQuestion(triniGame);
-
-	$(".answerButtons").click(function () {
-		isAnswerClicked = true;
-		if ($(this).attr("id") == 3) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
-			corrects++;
-			clearInterval(questionTimeKeeper);
-			clearInterval(gameTimeKeeper);
-			nextQuestionTimeout = setTimeout(questionFour, 3000);
-			setTimeout(startGameTimer, 3000);
-		} 
-
-		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][3]);
-			incorrects++;
-			clearInterval(questionTimeKeeper);
-			nextQuestionTimeout = setTimeout(questionFour, 2000);
-		}
-	});
+	checkAnswer(3, setQuestionFour);
 }
 
 function questionFour() {
 	resetQuestionTimer();
-	currentQuestion++;
 	startQuestionTimer();
 	askQuestion(triniGame);
-
-	$(".answerButtons").click(function () {
-		isAnswerClicked = true;
-		if ($(this).attr("id") == 1) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
-			corrects++;
-			clearInterval(questionTimeKeeper);
-			clearInterval(gameTimeKeeper);
-			nextQuestionTimeout = setTimeout(resultsPage, 3000);
-			setTimeout(gameTimeKeeper, 3000);
-		} 
-
-		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
-			incorrects++;
-			clearInterval(questionTimeKeeper);
-			nextQuestionTimeout = setTimeout(resultsPage, 2000);
-		}
-	});
+	checkAnswer(1, setResultsPage);
 }
 
 function resultsPage(){
-
 	clearInterval(gameTimeKeeper);
 	clearInterval(questionTimeKeeper);
 	$("#pregunta").empty();
