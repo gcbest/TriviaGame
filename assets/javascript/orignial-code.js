@@ -1,4 +1,3 @@
-
 var corrects;
 var incorrects;
 var questionTimer;
@@ -9,50 +8,27 @@ var isAnswerClicked;
 var isRestartClicked = false;
 var nextQuestionTimeout;
 
-// Create object with game info
-// Array of questions 
-// Array of answers
-// Array of pics	
-
-var triniQuestions = ["What is the Capital of Trinidad & Tobago?", "Who is Trinidad & Tobago's Prime Minister?", "What is Trinidad's National Bird?", 
-						"When did Trinidad & Tobago gain independence?", "Which Trini was the first black woman to win Miss Universe?"];
-
-var triniChoices = [["Arima", "Port Of Spain", "Diego Martin", "Toco"], ["Keith Rowley", "Kamla Persad", "Patrick Manning", "Brian Lara"], 
-					["Bald Eagle", "Mighty Sparrow", "Scarlet Ibis", "Trini Pigeon"], ["August 31, 1961", "September 30, 1961", "July 31, 1961", "August 31, 1962"],
-					["Giselle Laronde","Janelle Commissiong", "Margot Rita Bourgeois", "Wendy Fitzwilliam"]];
-
-var answerPics = ["<img src='assets/images/PoS.jpg'>", "<img src='assets/images/chiefKeith.jpg'>", "<img src='assets/images/scarlet.jpg'>", 
-					"<img src='assets/images/independence.jpg'>", "<img src='assets/images/janelle.jpg'>"];
-
-
-
-
-// Constructor holding the game info.  Takes in an array of questions, a 2-dimensional array of answer choices,
-// and an array of img tags to picture pictures which will be displayed on a correct choice
-function gameInfo(questions, choices, pictures) {
-	this.questions = questions,
-	this.choices = choices,
-	this.pictures = pictures
+var qAnda = {
+	question0: "What is the Capital of Trinidad & Tobago?",
+	question1: "Who is Trinidad & Tobago's Prime Minister?",
+	question2: "What is Trinidad's National Bird?",
+	question3: "When did Trinidad & Tobago gain independence?",
+	question4: "Which Trini was the first black woman to win Miss Universe?",
+	choices0: ["Arima", "Port Of Spain", "Diego Martin", "Toco"],
+	choices1: ["Keith Rowley", "Kamla Persad", "Patrick Manning", "Brian Lara"],
+	choices2: ["Bald Eagle", "Mighty Sparrow", "Scarlet Ibis", "Trini Pigeon"],
+	choices3: ["August 31, 1961", "September 30, 1961", "July 31, 1961", "August 31, 1962"],
+	choices4: ["Giselle Laronde","Janelle Commissiong", "Margot Rita Bourgeois", "Wendy Fitzwilliam"]
 }
 
-var triniGame = new gameInfo(triniQuestions, triniChoices, answerPics);
-
-function askQuestion(gameInformation) {
-	emptyChoices();
-	emptyFeedback();
-	$("#pregunta").text(gameInformation.questions[currentQuestion]);
-	isAnswerClicked = false;
-	for (i=0; i < gameInformation.choices[currentQuestion].length; i++) {
-		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + gameInformation.choices[currentQuestion][i] + "</button><br>");
-	}
-
+var answerPics = {
+	questionZero: "<img src='assets/images/PoS.jpg'>",
+	questionOne: "<img src='assets/images/chiefKeith.jpg'>",
+	questionTwo: "<img src='assets/images/scarlet.jpg'>",
+	questionThree:"<img src='assets/images/independence.jpg'>",
+	questionFour: "<img src='assets/images/janelle.jpg'>"
 }
 
-
-
-
-// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ================================================================================================================
 
 $("#restart").click(function(){
 		isRestartClicked = true;
@@ -66,6 +42,7 @@ function play() {
 	gameTimer = 60;
 	resetQuestionTimer();
 	isAnswerClicked = false;
+	// isRestartClicked = false;
 	currentQuestion = 0;
 	corrects = 0;
 	incorrects = 0;
@@ -114,27 +91,28 @@ function decreaseQuestionTime() {
 		clearInterval(questionTimeKeeper);
 
 		if (currentQuestion == 0 && isAnswerClicked == false) {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
+			console.log(isRestartClicked);
+			incorrectAnswerFeedback(qAnda.choices0[1]);
 			nextQuestionTimeout = setTimeout(questionOne, 2000);
 		}
 
 		if (currentQuestion == 1 && isAnswerClicked == false) {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][0]);
+			incorrectAnswerFeedback(qAnda.choices1[0]);
 			nextQuestionTimeout = setTimeout(questionTwo, 2000);
 		}
 		
 		if (currentQuestion == 2 && isAnswerClicked == false) {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][2]);
+			incorrectAnswerFeedback(qAnda.choices2[2]);
 			nextQuestionTimeout = setTimeout(questionThree, 2000);
 		}
 
 		if (currentQuestion == 3 && isAnswerClicked == false) {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][3]);
+			incorrectAnswerFeedback(qAnda.choices3[3]);
 			nextQuestionTimeout = setTimeout(questionFour, 2000);
 		}
 
 		if (currentQuestion == 4 && isAnswerClicked == false) {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
+			incorrectAnswerFeedback(qAnda.choices4[1]);
 			nextQuestionTimeout = setTimeout(resultsPage, 2000);
 		}
 	}
@@ -168,12 +146,25 @@ function incorrectAnswerFeedback(answer) {
 function questionZero() {
 	// variable to determine which question the user is on
 	currentQuestion = 0;
-	askQuestion(triniGame);
+	$("#pregunta").text(qAnda.question0);
+	// $(".theChoices").html($.each(qAnda.choices0, function(index, value) {
+	// 	var str = "<button>" + value + "</button><br>";
+	// 	console.log(str);
+	// 	return str; 
+	// }));
+
+	emptyChoices();
+	emptyFeedback();
+	isAnswerClicked = false;
+	for (i=0; i < qAnda.choices0.length; i++) {
+		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + qAnda.choices0[i] + "</button><br>");
+	}
+
 	if (gameTimer > 0 && questionTimer > 0) {
 		$(".answerButtons").click(function () {
 			isAnswerClicked = true;
 			if ($(this).attr("id") == 1) {
-				correctAnswerFeedback(triniGame.pictures[currentQuestion]);
+				correctAnswerFeedback(answerPics.questionZero);
 				corrects++;
 				clearInterval(questionTimeKeeper);
 				clearInterval(gameTimeKeeper);
@@ -183,15 +174,13 @@ function questionZero() {
 			} 
 
 			else {
-				incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
+				incorrectAnswerFeedback(qAnda.choices0[1]);
 				incorrects++;
 				clearInterval(questionTimeKeeper);
-				currentQuestion++;
 				nextQuestionTimeout = setTimeout(questionOne, 2000);							
 			}
 		});	
 	}
-
 }
 
 
@@ -199,11 +188,25 @@ function questionOne() {
 	resetQuestionTimer();
 	currentQuestion++;
 	startQuestionTimer();
-	askQuestion(triniGame);
+	emptyChoices();
+	emptyFeedback();
+	isAnswerClicked = false;
+	$("#pregunta").text(qAnda.question1);
+	// $(".theChoices").html($.each(qAnda.choices0, function(index, value) {
+	// 	var str = "<button>" + value + "</button><br>";
+	// 	console.log(str);
+	// 	return str; 
+	// }));
+	
+	for (i=0; i < qAnda.choices1.length; i++) {
+		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + qAnda.choices1[i] + "</button><br>");
+		// $("button").attr("id");
+	}
+
 	$(".answerButtons").click(function () {
 		isAnswerClicked = true;
 		if ($(this).attr("id") == 0) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
+			correctAnswerFeedback(answerPics.questionOne);
 			corrects++;
 			clearInterval(questionTimeKeeper);
 			clearInterval(gameTimeKeeper);
@@ -212,7 +215,7 @@ function questionOne() {
 		} 
 
 		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][0]);
+			incorrectAnswerFeedback(qAnda.choices1[0]);
 			incorrects++;
 			clearInterval(questionTimeKeeper);
 			nextQuestionTimeout = setTimeout(questionTwo, 2000);
@@ -227,12 +230,25 @@ function questionTwo() {
 	resetQuestionTimer();
 	currentQuestion++;
 	startQuestionTimer();
-	askQuestion(triniGame);
+	emptyChoices();
+	emptyFeedback();
+	isAnswerClicked = false;
+	$("#pregunta").text(qAnda.question2);
+	// $(".theChoices").html($.each(qAnda.choices0, function(index, value) {
+	// 	var str = "<button>" + value + "</button><br>";
+	// 	console.log(str);
+	// 	return str; 
+	// }));
+	
+	for (i=0; i < qAnda.choices2.length; i++) {
+		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + qAnda.choices2[i] + "</button><br>");
+		// $("button").attr("id", qAnda.choices0[i]);
+	}
 
 	$(".answerButtons").click(function () {
 		isAnswerClicked = true;
 		if ($(this).attr("id") == 2) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
+			correctAnswerFeedback(answerPics.questionTwo);
 			corrects++;
 			clearInterval(questionTimeKeeper);
 			clearInterval(gameTimeKeeper);
@@ -241,7 +257,7 @@ function questionTwo() {
 		} 
 
 		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][2]);
+			incorrectAnswerFeedback(qAnda.choices2[2]);
 			incorrects++;
 			clearInterval(questionTimeKeeper);
 			nextQuestionTimeout = setTimeout(questionThree, 2000);
@@ -253,12 +269,25 @@ function questionThree() {
 	resetQuestionTimer();
 	currentQuestion++;
 	startQuestionTimer();
-	askQuestion(triniGame);
+	emptyChoices();
+	emptyFeedback();
+	isAnswerClicked = false;
+	$("#pregunta").text(qAnda.question3);
+	// $(".theChoices").html($.each(qAnda.choices0, function(index, value) {
+	// 	var str = "<button>" + value + "</button><br>";
+	// 	console.log(str);
+	// 	return str; 
+	// }));
+	
+	for (i=0; i < qAnda.choices3.length; i++) {
+		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + qAnda.choices3[i] + "</button><br>");
+		// $("button").attr("id", qAnda.choices0[i]);
+	}
 
 	$(".answerButtons").click(function () {
 		isAnswerClicked = true;
 		if ($(this).attr("id") == 3) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
+			correctAnswerFeedback(answerPics.questionThree);
 			corrects++;
 			clearInterval(questionTimeKeeper);
 			clearInterval(gameTimeKeeper);
@@ -267,7 +296,7 @@ function questionThree() {
 		} 
 
 		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][3]);
+			incorrectAnswerFeedback(qAnda.choices3[3]);
 			incorrects++;
 			clearInterval(questionTimeKeeper);
 			nextQuestionTimeout = setTimeout(questionFour, 2000);
@@ -279,12 +308,25 @@ function questionFour() {
 	resetQuestionTimer();
 	currentQuestion++;
 	startQuestionTimer();
-	askQuestion(triniGame);
+	emptyChoices();
+	emptyFeedback();
+	isAnswerClicked = false;
+	$("#pregunta").text(qAnda.question4);
+	// $(".theChoices").html($.each(qAnda.choices0, function(index, value) {
+	// 	var str = "<button>" + value + "</button><br>";
+	// 	console.log(str);
+	// 	return str; 
+	// }));
+	
+	for (i=0; i < qAnda.choices4.length; i++) {
+		$(".theChoices").append("<button class='answerButtons' id=" + i + ">" + qAnda.choices4[i] + "</button><br>");
+		// $("button").attr("id", qAnda.choices0[i]);
+	}
 
 	$(".answerButtons").click(function () {
 		isAnswerClicked = true;
 		if ($(this).attr("id") == 1) {
-			correctAnswerFeedback(triniGame.pictures[currentQuestion]);
+			correctAnswerFeedback(answerPics.questionFour);
 			corrects++;
 			clearInterval(questionTimeKeeper);
 			clearInterval(gameTimeKeeper);
@@ -293,7 +335,7 @@ function questionFour() {
 		} 
 
 		else {
-			incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
+			incorrectAnswerFeedback(qAnda.choices4[1]);
 			incorrects++;
 			clearInterval(questionTimeKeeper);
 			nextQuestionTimeout = setTimeout(resultsPage, 2000);
