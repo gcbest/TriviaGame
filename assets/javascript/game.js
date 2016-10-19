@@ -8,6 +8,7 @@ var currentQuestion;
 var isAnswerClicked;
 var isRestartClicked = false;
 var nextQuestionTimeout;
+var currentQuestionTimeout;
 
 // Create object with game info
 // Array of questions 
@@ -103,9 +104,6 @@ function decreaseGameTime() {
 function decreaseQuestionTime() {
 	questionTimer--;
 	$(".questionTiempo").html("Question Time Remaining: " + questionTimer + " seconds");
-	// console.log(isAnswerClicked);
-	// console.log(currentQuestion);
-	// console.log(questionTimer);
 
 	if (questionTimer <= 0) {
 		$(".questionTiempo").html("Question Time Remaining: " + 0 + " seconds");
@@ -113,27 +111,30 @@ function decreaseQuestionTime() {
 
 		if (currentQuestion == 0 && isAnswerClicked == false) {
 			incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
-			nextQuestionTimeout = setTimeout(questionOne, 2000);
+			setQuestionOne();
+			
+			
 		}
 
 		if (currentQuestion == 1 && isAnswerClicked == false) {
 			incorrectAnswerFeedback(triniGame.choices[currentQuestion][0]);
-			nextQuestionTimeout = setTimeout(questionTwo, 2000);
+			setQuestionTwo();
+			
 		}
 		
 		if (currentQuestion == 2 && isAnswerClicked == false) {
 			incorrectAnswerFeedback(triniGame.choices[currentQuestion][2]);
-			nextQuestionTimeout = setTimeout(questionThree, 2000);
+			setQuestionThree();
 		}
 
 		if (currentQuestion == 3 && isAnswerClicked == false) {
 			incorrectAnswerFeedback(triniGame.choices[currentQuestion][3]);
-			nextQuestionTimeout = setTimeout(questionFour, 2000);
+			setQuestionFour();
 		}
 
 		if (currentQuestion == 4 && isAnswerClicked == false) {
 			incorrectAnswerFeedback(triniGame.choices[currentQuestion][1]);
-			nextQuestionTimeout = setTimeout(resultsPage, 2000);
+			setResultsPage();
 		}
 	}
 }
@@ -161,6 +162,7 @@ function incorrectAnswerFeedback(answer) {
 	$(".theChoices").empty();
 	$(".feedback").html("Sorry the correct answer was:<br>" + answer);
 }
+
 
 function setQuestionOne() {
 	nextQuestionTimeout = setTimeout(questionOne, 3000);
@@ -206,25 +208,21 @@ function checkAnswer(answerNum, next) {
 			}
 		});	
 	}
-	else {
-		currentQuestion++;
-		console.log(questionTimer);
-	}
-	
+		
 }
 
 function questionZero() {
 	// variable to determine which question the user is on
-	currentQuestion = 0;
+	// currentQuestion = 0;
 	isAnswerClicked = false;
 	askQuestion(triniGame);
 	checkAnswer(1, setQuestionOne);
-	
-
 }
 
 
 function questionOne() {
+	currentQuestion = 1;
+	isAnswerClicked = false;
 	resetQuestionTimer();
 	startQuestionTimer();
 	askQuestion(triniGame);
@@ -233,6 +231,8 @@ function questionOne() {
 
 
 function questionTwo() {
+	currentQuestion = 2;
+	isAnswerClicked = false;
 	resetQuestionTimer();
 	startQuestionTimer();
 	askQuestion(triniGame);
@@ -240,6 +240,8 @@ function questionTwo() {
 }
 
 function questionThree() {
+	currentQuestion = 3;
+	isAnswerClicked = false;
 	resetQuestionTimer();
 	startQuestionTimer();
 	askQuestion(triniGame);
@@ -247,6 +249,8 @@ function questionThree() {
 }
 
 function questionFour() {
+	currentQuestion = 4;
+	isAnswerClicked = false;
 	resetQuestionTimer();
 	startQuestionTimer();
 	askQuestion(triniGame);
