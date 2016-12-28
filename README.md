@@ -12,7 +12,7 @@ If the player chooses the wrong answer, it tells the player they selected the wr
 
 On the final screen, it shows the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
 
-![image Description](https://github.com/gcbest/TriviaGame/blob/master/app/public/triniTriviaScreenshot.png)
+![image Description](https://github.com/gcbest/TriviaGame/blob/master/assets/images/triniTriviaScreenshot.png)
 
 ## How to use my App
 
